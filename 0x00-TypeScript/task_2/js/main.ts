@@ -36,12 +36,30 @@ class Teacher implements TeacherInterface{
 
 }
 
-const createEmployee = (salary: (number | string)): (Director | Teacher) => {
-    if(salary < 500)
-        return new Teacher();
+export function createEmployee(salary: number | string): Teacher | Director {
+    if (typeof salary === "number" && salary < 500) return new Teacher();
     return new Director();
-}
+  }
 
-console.log(createEmployee(200));
-console.log(createEmployee(1000));
-console.log(createEmployee(2000));
+  export function isDirector(employee: (Director | Teacher)): employee is Director{
+        return (employee as Director) instanceof Director;
+  }
+
+  export function executeWork(employee: DirectorInterface | TeacherInterface): string {
+    if(isDirector(employee)){
+      return employee.workDirectorTasks();
+    }else {
+      return employee.workTeacherTasks();
+    }
+  }
+
+  type Subjects = "Math" | "History";
+
+  export function teachClass(todayClass:Subjects): string {
+    if (todayClass === "Math") {
+      return "Teaching Math";
+    } else if (todayClass === "History") {
+      return "Teaching History";
+    }
+  }
+  
